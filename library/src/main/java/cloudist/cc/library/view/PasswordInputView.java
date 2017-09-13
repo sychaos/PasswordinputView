@@ -9,6 +9,8 @@ import android.support.v4.content.ContextCompat;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 
 import cloudist.cc.library.R;
@@ -30,7 +32,6 @@ public class PasswordInputView extends EditText {
 
     private float itemPadding;
     private float itemHeight;
-    private boolean normalInput;
 
     private Paint passwordPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -61,18 +62,25 @@ public class PasswordInputView extends EditText {
         itemPadding = a.getDimension(R.styleable.PasswordInputView_itemPadding, 8f);
         itemHeight = a.getDimension(R.styleable.PasswordInputView_itemHeight, 36f);
 
-        normalInput = a.getBoolean(R.styleable.PasswordInputView_normalInput, true);
-
         passwordPaint.setStyle(Paint.Style.FILL);
         passwordPaint.setColor(passwordColor);
 
         a.recycle();
 
-        setFocusable(normalInput);
         setCursorVisible(false);
         setFilters(new InputFilter[]{new InputFilter.LengthFilter(passwordLength)});
         setSingleLine(true);
-        setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                PasswordInputView.this.setInputType(InputType.TYPE_NULL); // disable soft input
+                PasswordInputView.this.onTouchEvent(motionEvent); // call native handler
+                PasswordInputView.this.setInputType(InputType.TYPE_CLASS_NUMBER); // restore input type
+                PasswordInputView.this.setSelection(PasswordInputView.this.getText().length());
+                return true;
+            }
+        });
     }
 
     @Override
@@ -82,7 +90,7 @@ public class PasswordInputView extends EditText {
         for (int i = 0; i < passwordLength; i++) {
             rect.set((itemHeight + itemPadding) * i + itemPadding, paddingVertical,
                     (itemHeight + itemPadding) * (i + 1), paddingVertical + itemHeight);
-            if (i == textLength && (!normalInput || hasFocus())) {
+            if (i == textLength && (hasFocus())) {
                 borderPaint.setColor(borderRespondingColor);
             } else {
                 borderPaint.setColor(borderColor);

@@ -12,23 +12,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.TextView;
 
 import cloudist.cc.library.R;
 import cloudist.cc.library.TextChangeListener;
 import cloudist.cc.library.view.NumKeyboard;
-import cloudist.cc.library.view.PasswordInputView;
 
 /**
  * Created by cloudist on 2017/9/13.
  */
 
-public class InputPasswordDialog extends DialogFragment {
+public class KeyBoardDialog extends DialogFragment {
 
-    TextChangeListener textChangeListener = null;
-
-    public static InputPasswordDialog newInstance() {
-        return new InputPasswordDialog();
+    public static KeyBoardDialog newInstance() {
+        return new KeyBoardDialog();
     }
+
+    TextView mTextView;
+    TextChangeListener textChangeListener = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,21 +41,17 @@ public class InputPasswordDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().getAttributes().windowAnimations = R.style.AnimBottomPushWindow;
-        View rootView = inflater.inflate(R.layout.dialog_input_password, container);
+        View rootView = inflater.inflate(R.layout.dialog_keyboard, container);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         getDialog().setCanceledOnTouchOutside(true);
         NumKeyboard keyboardView = view.findViewById(R.id.keyboardView);
-        PasswordInputView passwordInputView = view.findViewById(R.id.passwordInputView);
-
-        keyboardView.bindTextView(passwordInputView);
-
-        passwordInputView.addTextChangedListener(new TextWatcher() {
+        keyboardView.bindTextView(mTextView);
+        mTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -73,6 +70,7 @@ public class InputPasswordDialog extends DialogFragment {
                 textChangeListener.textChange(editable.toString());
             }
         });
+
     }
 
     @Override
@@ -83,8 +81,19 @@ public class InputPasswordDialog extends DialogFragment {
         display.getSize(size);
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawableResource(R.color.transparent);
+        window.setDimAmount(0f);
         window.setGravity(Gravity.BOTTOM);
         super.onResume();
+    }
+
+    public KeyBoardDialog bindTextView(TextView textView) {
+        mTextView = textView;
+        return this;
+    }
+
+    public KeyBoardDialog setTextChangeListener(TextChangeListener textChangeListener) {
+        this.textChangeListener = textChangeListener;
+        return this;
     }
 
     @Override
@@ -92,9 +101,5 @@ public class InputPasswordDialog extends DialogFragment {
         super.onDestroyView();
     }
 
-    public InputPasswordDialog setTextChangeListener(TextChangeListener textChangeListener) {
-        this.textChangeListener = textChangeListener;
-        return this;
-    }
 
 }

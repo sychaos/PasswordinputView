@@ -26,26 +26,29 @@ public class NumKeyboard extends LinearLayout {
     private GridView gvKeyboard;
     private TextView mTextView;
     private KeyboardAdapter mAdapter;
+    private int mHeight;
 
     public NumKeyboard(Context context) {
         super(context);
         mContext = context;
+        initKeyboardView();
     }
 
     public NumKeyboard(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
+        initKeyboardView();
     }
 
     public NumKeyboard(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
+        initKeyboardView();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        initKeyboardView();
     }
 
     private void initKeyboardView() {
@@ -74,6 +77,7 @@ public class NumKeyboard extends LinearLayout {
                 }
             }
         });
+        mHeight = view.getHeight();
     }
 
     public void bindTextView(TextView textView) {

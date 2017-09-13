@@ -9,7 +9,6 @@
     <attr name="passwordLength" format="integer" />
     <attr name="itemPadding" format="dimension" />
     <attr name="itemHeight" format="dimension" />
-    <attr name="normalInput" format="boolean" />
 
     <declare-styleable name="PasswordInputView">
         <attr name="borderColor" />
@@ -21,6 +20,5 @@
         <attr name="passwordLength" />
         <attr name="itemPadding" />
         <attr name="itemHeight" />
-        <attr name="normalInput" />
     </declare-styleable>
 </resources>
