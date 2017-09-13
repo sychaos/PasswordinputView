@@ -13,8 +13,6 @@ import android.widget.EditText;
 
 import cloudist.cc.library.R;
 
-import static android.text.InputFilter.*;
-
 /**
  * Created by cloudist on 2017/9/13.
  */
@@ -47,6 +45,9 @@ public class PasswordInputView extends EditText {
     }
 
     private void init(Context context, AttributeSet attrs) {
+        if (attrs == null) {
+            return;
+        }
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PasswordInputView, 0, 0);
         borderColor = a.getColor(R.styleable.PasswordInputView_borderColor, ContextCompat.getColor(context, R.color.textMedium));
         borderRespondingColor = a.getColor(R.styleable.PasswordInputView_borderRespondingColor, ContextCompat.getColor(context, R.color.colorBlue));
@@ -64,6 +65,8 @@ public class PasswordInputView extends EditText {
 
         passwordPaint.setStyle(Paint.Style.FILL);
         passwordPaint.setColor(passwordColor);
+
+        a.recycle();
 
         setFocusable(normalInput);
         setCursorVisible(false);
