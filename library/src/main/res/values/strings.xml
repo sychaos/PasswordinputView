@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">library</string>
+
+    <string name="pay_message">请输入支付密码</string>
+</resources>

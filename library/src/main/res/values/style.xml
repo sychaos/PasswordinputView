@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ThemeBottomDialog">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="text_dark_17">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/textDark</item>
+    </style>
+
+    <style name="AnimBottomPushWindow">
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out2</item>
+    </style>
+</resources>
