@@ -13,6 +13,13 @@
         android:layout_height="wrap_content"
         android:text="dialog" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="test"
+        android:imeOptions="actionNext"
+        android:singleLine="true" />
+
     <cloudist.cc.library.view.PasswordInputView
         android:id="@+id/password_inputview"
         android:layout_width="wrap_content"
@@ -23,5 +30,12 @@
         app:itemPadding="8dp"
         app:passwordLength="8"
         app:passwordWidth="6dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="test"
+        android:imeOptions="actionDone"
+        android:singleLine="true" />
 
 </LinearLayout>

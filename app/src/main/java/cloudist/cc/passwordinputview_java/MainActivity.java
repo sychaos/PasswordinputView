@@ -10,7 +10,6 @@ import android.widget.Toast;
 import cloudist.cc.library.TextChangeListener;
 import cloudist.cc.library.view.PasswordInputView;
 import cloudist.cc.library.widget.InputPasswordDialog;
-import cloudist.cc.library.widget.KeyBoardDialog;
 
 /**
  * Created by cloudist on 2017/9/13.
@@ -39,20 +38,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        passwordInputView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                KeyBoardDialog.newInstance()
-                        .bindTextView(passwordInputView)
-                        .setTextChangeListener(new TextChangeListener() {
-                            @Override
-                            public void textChange(String text) {
-                                Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .show(getSupportFragmentManager(), "");
-            }
-        });
+        passwordInputView.bindKeyBoard(getSupportFragmentManager(), "");
+
     }
 
 }
