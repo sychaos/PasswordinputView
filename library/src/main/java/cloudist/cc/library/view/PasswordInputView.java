@@ -5,21 +5,26 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import cloudist.cc.library.R;
+import cloudist.cc.library.widget.KeyBoardDialog;
 
 /**
  * Created by cloudist on 2017/9/13.
  */
 
 public class PasswordInputView extends EditText {
+
+    private Context mContext;
+    private KeyBoardDialog mKeyBoardDialog;
 
     private int borderColor;
     private int borderRespondingColor;
@@ -32,7 +37,6 @@ public class PasswordInputView extends EditText {
 
     private float itemPadding;
     private float itemHeight;
-
     private Paint passwordPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private int textLength = 0;
@@ -42,20 +46,21 @@ public class PasswordInputView extends EditText {
 
     public PasswordInputView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs);
+        mContext = context;
+        init(attrs);
     }
 
-    private void init(Context context, AttributeSet attrs) {
+    private void init(AttributeSet attrs) {
         if (attrs == null) {
             return;
         }
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PasswordInputView, 0, 0);
-        borderColor = a.getColor(R.styleable.PasswordInputView_borderColor, ContextCompat.getColor(context, R.color.textMedium));
-        borderRespondingColor = a.getColor(R.styleable.PasswordInputView_borderRespondingColor, ContextCompat.getColor(context, R.color.colorBlue));
+        TypedArray a = mContext.getTheme().obtainStyledAttributes(attrs, R.styleable.PasswordInputView, 0, 0);
+        borderColor = a.getColor(R.styleable.PasswordInputView_borderColor, ContextCompat.getColor(mContext, R.color.textMedium));
+        borderRespondingColor = a.getColor(R.styleable.PasswordInputView_borderRespondingColor, ContextCompat.getColor(mContext, R.color.colorBlue));
         borderWidth = a.getDimension(R.styleable.PasswordInputView_borderWidth, 0.5f);
         borderRadius = a.getDimension(R.styleable.PasswordInputView_borderRadius, 2f);
 
-        passwordColor = a.getColor(R.styleable.PasswordInputView_passwordColor, ContextCompat.getColor(context, R.color.textDark));
+        passwordColor = a.getColor(R.styleable.PasswordInputView_passwordColor, ContextCompat.getColor(mContext, R.color.textDark));
         passwordWidth = a.getDimension(R.styleable.PasswordInputView_passwordWidth, 6f);
         passwordLength = a.getInteger(R.styleable.PasswordInputView_passwordLength, 6);
 
@@ -70,17 +75,10 @@ public class PasswordInputView extends EditText {
         setCursorVisible(false);
         setFilters(new InputFilter[]{new InputFilter.LengthFilter(passwordLength)});
         setSingleLine(true);
+        setInputType(InputType.TYPE_CLASS_NUMBER); // restore input type
 
-        setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                PasswordInputView.this.setInputType(InputType.TYPE_NULL); // disable soft input
-                PasswordInputView.this.onTouchEvent(motionEvent); // call native handler
-                PasswordInputView.this.setInputType(InputType.TYPE_CLASS_NUMBER); // restore input type
-                PasswordInputView.this.setSelection(PasswordInputView.this.getText().length());
-                return true;
-            }
-        });
+        initListener();
+
     }
 
     @Override
@@ -90,7 +88,7 @@ public class PasswordInputView extends EditText {
         for (int i = 0; i < passwordLength; i++) {
             rect.set((itemHeight + itemPadding) * i + itemPadding, paddingVertical,
                     (itemHeight + itemPadding) * (i + 1), paddingVertical + itemHeight);
-            if (i == textLength && (hasFocus())) {
+            if (i == textLength && hasFocus()) {
                 borderPaint.setColor(borderRespondingColor);
             } else {
                 borderPaint.setColor(borderColor);
@@ -101,7 +99,7 @@ public class PasswordInputView extends EditText {
             // 内容区
             rectIn.set(rect.left + borderWidth, rect.top + borderWidth,
                     rect.right - borderWidth, rect.bottom - borderWidth);
-            borderPaint.setColor(ContextCompat.getColor(getContext(), R.color.white));
+            borderPaint.setColor(ContextCompat.getColor(mContext, R.color.white));
             canvas.drawRoundRect(rectIn, borderRadius, borderRadius, borderPaint);
         }
 
@@ -126,6 +124,84 @@ public class PasswordInputView extends EditText {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
         this.textLength = text.length();
         invalidate();
+    }
+
+    public void bindKeyBoard(final FragmentManager manager, final String tag) {
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(PasswordInputView.this.getWindowToken(), 0);
+                    }
+                });
+                showKeyBoard(view, manager, tag);
+            }
+        });
+
+        setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean isFocus) {
+                if (isFocus) {
+                    view.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(PasswordInputView.this.getWindowToken(), 0);
+                        }
+                    });
+                    showKeyBoard(view, manager, tag);
+                }
+            }
+        });
+    }
+
+    private void showKeyBoard(View view, final FragmentManager manager, final String tag) {
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mKeyBoardDialog = KeyBoardDialog.newInstance();
+                mKeyBoardDialog.bindTextView(PasswordInputView.this)
+                        .show(manager, tag);
+            }
+        }, 100);
+    }
+
+    public void unbindKeyBoard() {
+        mKeyBoardDialog= null;
+        initListener();
+    }
+
+    private void initListener() {
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(PasswordInputView.this.getWindowToken(), 0);
+                    }
+                });
+            }
+        });
+
+        setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean isFocus) {
+                if (isFocus) {
+                    view.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(PasswordInputView.this.getWindowToken(), 0);
+                        }
+                    });
+                }
+            }
+        });
     }
 
 }

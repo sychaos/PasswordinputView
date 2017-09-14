@@ -4,8 +4,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,7 +13,6 @@ import android.view.Window;
 import android.widget.TextView;
 
 import cloudist.cc.library.R;
-import cloudist.cc.library.TextChangeListener;
 import cloudist.cc.library.view.NumKeyboard;
 
 /**
@@ -29,7 +26,6 @@ public class KeyBoardDialog extends DialogFragment {
     }
 
     TextView mTextView;
-    TextChangeListener textChangeListener = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,25 +47,6 @@ public class KeyBoardDialog extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         NumKeyboard keyboardView = view.findViewById(R.id.keyboardView);
         keyboardView.bindTextView(mTextView);
-        mTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (textChangeListener == null) {
-                    return;
-                }
-                textChangeListener.textChange(editable.toString());
-            }
-        });
 
     }
 
@@ -88,11 +65,6 @@ public class KeyBoardDialog extends DialogFragment {
 
     public KeyBoardDialog bindTextView(TextView textView) {
         mTextView = textView;
-        return this;
-    }
-
-    public KeyBoardDialog setTextChangeListener(TextChangeListener textChangeListener) {
-        this.textChangeListener = textChangeListener;
         return this;
     }
 
