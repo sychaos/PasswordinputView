@@ -40,8 +40,7 @@ public class InputPasswordDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().getAttributes().windowAnimations = R.style.AnimBottomPushWindow;
-        View rootView = inflater.inflate(R.layout.dialog_input_password, container);
-        return rootView;
+        return inflater.inflate(R.layout.dialog_input_password, container);
     }
 
     @Override

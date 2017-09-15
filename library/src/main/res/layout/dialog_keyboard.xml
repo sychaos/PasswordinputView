@@ -10,9 +10,8 @@
     <cloudist.cc.library.view.NumKeyboard
         android:id="@+id/keyboardView"
         android:layout_width="match_parent"
-        android:layout_height="202dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-
     </cloudist.cc.library.view.NumKeyboard>
 
 </LinearLayout>

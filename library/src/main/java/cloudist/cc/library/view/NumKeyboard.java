@@ -49,6 +49,18 @@ public class NumKeyboard extends LinearLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
+        View view = getChildAt(0);
+        if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST) {
+            setMeasuredDimension(view.getMeasuredWidth(), view.getMeasuredHeight());
+        } else if (heightSpecMode == MeasureSpec.AT_MOST) {
+            setMeasuredDimension(widthSpecSize, view.getMeasuredHeight());
+        } else if (widthSpecMode == MeasureSpec.AT_MOST) {
+            setMeasuredDimension(view.getMeasuredWidth(), heightSpecSize);
+        }
     }
 
     private void initKeyboardView() {
