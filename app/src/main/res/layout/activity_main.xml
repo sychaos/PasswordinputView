@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
+    android:background="@color/bgGray"
     android:orientation="vertical">
 
     <Button
@@ -22,14 +23,26 @@
 
     <cloudist.cc.library.view.PasswordInputView
         android:id="@+id/password_inputview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:borderWidth="0.5dp"
+        app:itemHeight="36dp"
+        app:itemPadding="8dp"
+        app:passwordLength="7"
+        app:passwordWidth="6dp" />
+
+    <cloudist.cc.library.view.PasswordInputView
+        android:id="@+id/password_inputview2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
         app:borderWidth="0.5dp"
         app:itemHeight="36dp"
         app:itemPadding="8dp"
-        app:passwordLength="8"
+        app:passwordLength="6"
         app:passwordWidth="6dp" />
+
 
     <EditText
         android:layout_width="match_parent"

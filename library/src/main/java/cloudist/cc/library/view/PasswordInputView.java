@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -115,8 +116,21 @@ public class PasswordInputView extends EditText {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension((int) itemHeight * passwordLength + (int) itemPadding * (passwordLength + 1)
-                , (int) (itemHeight + 2 * itemPadding));
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
+        if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST) {
+            setMeasuredDimension((int) itemHeight * passwordLength + (int) itemPadding * (passwordLength + 1)
+                    , (int) (itemHeight + 2 * itemPadding));
+        } else if (heightSpecMode == MeasureSpec.AT_MOST) {
+            setMeasuredDimension(widthSpecSize, (int) (itemHeight + 2 * itemPadding));
+        } else if (widthSpecMode == MeasureSpec.AT_MOST) {
+            setMeasuredDimension((int) itemHeight * passwordLength + (int) itemPadding * (passwordLength + 1), heightSpecSize);
+        } else {
+            setMeasuredDimension(widthSpecSize, heightSpecSize);
+        }
     }
 
     @Override
@@ -170,7 +184,7 @@ public class PasswordInputView extends EditText {
     }
 
     public void unbindKeyBoard() {
-        mKeyBoardDialog= null;
+        mKeyBoardDialog = null;
         initListener();
     }
 

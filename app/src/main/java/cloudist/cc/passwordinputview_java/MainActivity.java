@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button button = findViewById(R.id.button);
         final PasswordInputView passwordInputView = findViewById(R.id.password_inputview);
+        final PasswordInputView passwordInputView2 = findViewById(R.id.password_inputview2);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         passwordInputView.bindKeyBoard(getSupportFragmentManager(), "");
+        passwordInputView2.bindKeyBoard(getSupportFragmentManager(), "");
 
     }
 
