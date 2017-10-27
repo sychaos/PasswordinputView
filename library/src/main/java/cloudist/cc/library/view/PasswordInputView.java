@@ -116,21 +116,33 @@ public class PasswordInputView extends EditText {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
-        if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST) {
-            setMeasuredDimension((int) itemHeight * passwordLength + (int) itemPadding * (passwordLength + 1)
-                    , (int) (itemHeight + 2 * itemPadding));
-        } else if (heightSpecMode == MeasureSpec.AT_MOST) {
-            setMeasuredDimension(widthSpecSize, (int) (itemHeight + 2 * itemPadding));
+
+        int width = (int) itemHeight * passwordLength + (int) itemPadding * (passwordLength + 1) + getPaddingLeft() + getPaddingRight();
+        int height = (int) (itemHeight + 2 * itemPadding) + getPaddingTop() + getPaddingBottom();
+
+        int mHeight, mWidth;
+
+        if (widthSpecMode == MeasureSpec.EXACTLY) {
+            mWidth = widthSpecSize;
         } else if (widthSpecMode == MeasureSpec.AT_MOST) {
-            setMeasuredDimension((int) itemHeight * passwordLength + (int) itemPadding * (passwordLength + 1), heightSpecSize);
+            mWidth = width;
         } else {
-            setMeasuredDimension(widthSpecSize, heightSpecSize);
+            mWidth = widthSpecSize;
         }
+
+        if (heightSpecMode == MeasureSpec.EXACTLY) {
+            mHeight = heightSpecSize;
+        } else if (heightSpecMode == MeasureSpec.AT_MOST) {
+            mHeight = height;
+        } else {
+            mHeight = heightSpecSize;
+        }
+
+        setMeasuredDimension(mWidth, mHeight);
     }
 
     @Override
