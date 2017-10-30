@@ -41,8 +41,8 @@ public class PasswordInputView extends EditText {
     private Paint passwordPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private int textLength = 0;
+    private float paddingVertical;
     private RectF rect = new RectF();
-    private RectF rectIn = new RectF();
 
 
     public PasswordInputView(Context context, AttributeSet attrs) {
@@ -84,8 +84,7 @@ public class PasswordInputView extends EditText {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // 外边框
-        float paddingVertical = (getHeight() - itemHeight) / 2;
+        // 绘制边框 如果不想要圆边的话其实可以使用Path
         for (int i = 0; i < passwordLength; i++) {
             rect.set((itemHeight + itemPadding) * i + itemPadding, paddingVertical,
                     (itemHeight + itemPadding) * (i + 1), paddingVertical + itemHeight);
@@ -94,14 +93,9 @@ public class PasswordInputView extends EditText {
             } else {
                 borderPaint.setColor(borderColor);
             }
-            borderPaint.setStrokeWidth(1f);
+            borderPaint.setStrokeWidth(borderWidth);
+            borderPaint.setStyle(Paint.Style.STROKE);
             canvas.drawRoundRect(rect, borderRadius, borderRadius, borderPaint);
-
-            // 内容区
-            rectIn.set(rect.left + borderWidth, rect.top + borderWidth,
-                    rect.right - borderWidth, rect.bottom - borderWidth);
-            borderPaint.setColor(ContextCompat.getColor(mContext, R.color.white));
-            canvas.drawRoundRect(rectIn, borderRadius, borderRadius, borderPaint);
         }
 
         // 密码
@@ -129,7 +123,7 @@ public class PasswordInputView extends EditText {
         if (widthSpecMode == MeasureSpec.EXACTLY) {
             mWidth = widthSpecSize;
         } else if (widthSpecMode == MeasureSpec.AT_MOST) {
-            mWidth = width;
+            mWidth = Math.min(width, widthSpecSize);
         } else {
             mWidth = widthSpecSize;
         }
@@ -137,11 +131,12 @@ public class PasswordInputView extends EditText {
         if (heightSpecMode == MeasureSpec.EXACTLY) {
             mHeight = heightSpecSize;
         } else if (heightSpecMode == MeasureSpec.AT_MOST) {
-            mHeight = height;
+            mHeight = Math.min(height, heightSpecSize);
         } else {
             mHeight = heightSpecSize;
         }
 
+        paddingVertical = (mHeight - itemHeight) / 2;
         setMeasuredDimension(mWidth, mHeight);
     }
 
