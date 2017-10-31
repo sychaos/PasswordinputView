@@ -1,7 +1,10 @@
 # PasswordinputView
 支付密码输入框及支付键盘
 ## ScreenShot
+InputPasswordDialog
 ![](display/Screenshot_1.png)
+
+PasswordInputView
 ![](display/Screenshot_2.png)
 
 ## Sample Code
