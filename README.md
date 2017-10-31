@@ -2,10 +2,10 @@
 支付密码输入框及支付键盘
 ## ScreenShot
 InputPasswordDialog
-![](display/Screenshot_1.png)
+![](display/Screenshot_1.png =100x100)
 
 PasswordInputView
-![](display/Screenshot_2.png)
+![](display/Screenshot_2.png =100x100)
 
 ## Usage
 
