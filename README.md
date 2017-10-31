@@ -1,8 +1,7 @@
 # PasswordinputView
 支付密码输入框及支付键盘
 ## ScreenShot
-InputPasswordDialog
-![](display/Screenshot_1.png =100x100)
+<img src="display/Screenshot_1.png" width = "300" height = "200" alt="InputPasswordDialog" align=center />
 
 PasswordInputView
 ![](display/Screenshot_2.png =100x100)
