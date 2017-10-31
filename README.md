@@ -2,10 +2,10 @@
 支付密码输入框及支付键盘
 ## ScreenShot
 InputPasswordDialog
-<img src="display/Screenshot_1.png" width = "540" height = "960" alt="InputPasswordDialog" align=center />
+<img src="display/Screenshot_1.png" width = "540" height = "960" alt="InputPasswordDialog" align=left />
 
 PasswordInputView
-<img src="display/Screenshot_2.png" width = "540" height = "960" alt="PasswordInputView" align=center />
+<img src="display/Screenshot_2.png" width = "540" height = "960" alt="PasswordInputView" align=left />
 
 ## Usage
 
