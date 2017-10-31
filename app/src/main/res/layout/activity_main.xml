@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="@color/bgGray"
     android:orientation="vertical">
 
     <Button
@@ -14,41 +13,28 @@
         android:layout_height="wrap_content"
         android:text="dialog" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="test"
-        android:imeOptions="actionNext"
-        android:singleLine="true" />
-
     <cloudist.cc.library.view.PasswordInputView
         android:id="@+id/password_inputview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/white"
         app:borderWidth="0.5dp"
         app:itemHeight="36dp"
         app:itemPadding="8dp"
         app:passwordLength="7"
+        app:borderRadius="1dp"
         app:passwordWidth="6dp" />
 
     <cloudist.cc.library.view.PasswordInputView
         android:id="@+id/password_inputview2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:background="@color/white"
         app:borderWidth="0.5dp"
         app:itemHeight="36dp"
         app:itemPadding="8dp"
         app:passwordLength="6"
+        app:borderRadius="10dp"
         app:passwordWidth="6dp" />
-
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="test"
-        android:imeOptions="actionDone"
-        android:singleLine="true" />
 
 </LinearLayout>
