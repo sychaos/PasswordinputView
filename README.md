@@ -29,9 +29,9 @@ PasswordInputView
 ```
 
 ```Java
-    show InputPasswordDialog
+   // show InputPasswordDialog
 
-    InputPasswordDialog.newInstance()
+   InputPasswordDialog.newInstance()
             .setTextChangeListener(new TextChangeListener() {
                 @Override
                 public void textChange(String text) {
